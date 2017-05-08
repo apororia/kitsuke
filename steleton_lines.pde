@@ -109,11 +109,9 @@ void draw() {
     //伊達締め
     PImage datejime = loadImage("datejime.png");
     subImg(datejime);
-    PImage d = stepImg.get(num).get(0, 180, stepImg.get(num).width, 80);
-    scale(-1, 1);
-    image(d, -d.width, 0);
-    println(d.height);
-    scale(-1, 1);
+    for (int i=0; i<kBodies.size(); i++) {
+      imageDatejime(kBodies.get(i));
+    }
     break;
   }
 }
@@ -195,4 +193,19 @@ void drawHemLine(KinectBody body) {
 //サブイラスト表示
 void subImg(PImage img) {
   image(img, width/2, height-img.height);
+}
+
+//伊達締めイラスト反転半透明
+void imageDatejime(KinectBody body) {
+  PImage d = stepImg.get(num).get(0, 180, stepImg.get(num).width, 80);
+  float dh = (body.spine.y-body.shoulderC.y)*3/5;
+  float dw = d.width*(dh/d.height);
+  scale(-1, 1);
+  tint(255, 160);
+  image(d, 
+    -body.shoulderC.x+dw/2, 
+    body.spine.y*3/4+body.shoulderC.y/4-dh/2, 
+    -dw, dh);
+  scale(-1, 1);
+  tint(255, 255);
 }
