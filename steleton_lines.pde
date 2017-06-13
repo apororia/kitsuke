@@ -126,6 +126,9 @@ void keyPressed() {
     } else if (keyCode == LEFT) {
       num--;
     }
+    if (key == 's') {
+    save("kitsuke_"+frameCount+".png");
+  }
   }
   if (num<0) {
     num=0;
