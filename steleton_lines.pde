@@ -67,7 +67,7 @@ void draw() {
   case 1:
     //裾
     for (int i=0; i<kBodies.size(); i++) {
-      drawHemLine(kBodies.get(i));
+      //drawHemLine(kBodies.get(i));
     }
     break;
 
@@ -110,7 +110,8 @@ void draw() {
     PImage datejime = loadImage("datejime.png");
     subImg(datejime);
     for (int i=0; i<kBodies.size(); i++) {
-      imageDatejime(kBodies.get(i));
+      //imageDatejime(kBodies.get(i));
+      drawDatejimeLine(kBodies.get(i));
     }
     break;
   }
@@ -127,8 +128,8 @@ void keyPressed() {
       num--;
     }
     if (key == 's') {
-    save("kitsuke_"+frameCount+".png");
-  }
+      save("kitsuke_"+frameCount+".png");
+    }
   }
   if (num<0) {
     num=0;
@@ -145,10 +146,10 @@ void drawCollarR(KinectBody body) {
   stroke(0, 255, 255);
   strokeWeight(3);
 
-  line(body.shoulderC.x+(body.shoulderC.x-body.shoulderL.x)/3, 
+  line(body.shoulderC.x+(body.shoulderC.x-body.shoulderL.x)/4, 
     body.shoulderC.y, 
-    body.shoulderC.x+(body.shoulderC.x-body.shoulderR.x)/3, 
-    body.shoulderC.y+(body.spine.y-body.shoulderC.y)/3);
+    body.shoulderC.x+(body.shoulderC.x-body.shoulderR.x)/4, 
+    body.shoulderC.y+(body.spine.y-body.shoulderC.y)/4);
 }
 
 //衿のライン左
@@ -156,10 +157,10 @@ void drawCollarL(KinectBody body) {
   stroke(0, 255, 255);
   strokeWeight(3);
 
-  line(body.shoulderC.x+(body.shoulderC.x-body.shoulderR.x)/3, 
+  line(body.shoulderC.x+(body.shoulderC.x-body.shoulderR.x)/4, 
     body.shoulderC.y, 
-    body.shoulderC.x+(body.shoulderC.x-body.shoulderL.x)/3, 
-    body.shoulderC.y+(body.spine.y-body.shoulderC.y)/3);
+    body.shoulderC.x+(body.shoulderC.x-body.shoulderL.x)/4, 
+    body.shoulderC.y+(body.spine.y-body.shoulderC.y)/4);
 }
 
 //腰ひも（胸）
@@ -169,6 +170,16 @@ void drawUpperBandLine(KinectBody body) {
 
   line(body.shoulderR.x, body.spine.y*3/4+body.shoulderC.y/4, 
     body.shoulderL.x, body.spine.y*3/4+body.shoulderC.y/4);
+}
+
+void drawDatejimeLine(KinectBody body) {
+  stroke(0, 255, 255);
+  strokeWeight(3);
+
+  line(body.shoulderR.x, body.spine.y*3/4+body.shoulderC.y/4, 
+    body.shoulderL.x, body.spine.y*3/4+body.shoulderC.y/4);
+  line(body.shoulderR.x, (body.spine.y+body.shoulderC.y)/2, 
+    body.shoulderL.x, (body.spine.y+body.shoulderC.y)/2);
 }
 
 //腰ひも
@@ -204,7 +215,7 @@ void imageDatejime(KinectBody body) {
   float dh = (body.spine.y-body.shoulderC.y)*3/5;
   float dw = d.width*(dh/d.height);
   scale(-1, 1);
-  tint(255, 160);
+  tint(255, 60);
   image(d, 
     -body.shoulderC.x+dw/2, 
     body.spine.y*3/4+body.shoulderC.y/4-dh/2, 
