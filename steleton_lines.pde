@@ -1,4 +1,5 @@
 
+
 import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
@@ -168,18 +169,21 @@ void drawUpperBandLine(KinectBody body) {
   stroke(0, 255, 255);
   strokeWeight(3);
 
-  line(body.shoulderR.x, body.spine.y*3/4+body.shoulderC.y/4, 
-    body.shoulderL.x, body.spine.y*3/4+body.shoulderC.y/4);
+  line(body.shoulderR.x, body.spine.y*3/4+body.shoulderC.y/4+(body.shoulderR.y-body.shoulderL.y), 
+    body.shoulderL.x, body.spine.y*3/4+body.shoulderC.y/4+(body.shoulderL.y-body.shoulderR.y));
+  /*line(body.shoulderR.x, body.spine.y/3+body.shoulderR.y*2/3, 
+   body.shoulderL.x, body.spine.y/3+body.shoulderL.y*2/3);*/
 }
 
+//伊達締め
 void drawDatejimeLine(KinectBody body) {
   stroke(0, 255, 255);
   strokeWeight(3);
 
-  line(body.shoulderR.x, body.spine.y*3/4+body.shoulderC.y/4, 
-    body.shoulderL.x, body.spine.y*3/4+body.shoulderC.y/4);
-  line(body.shoulderR.x, (body.spine.y+body.shoulderC.y)/2, 
-    body.shoulderL.x, (body.spine.y+body.shoulderC.y)/2);
+  //上線は胸紐と同じ
+  drawUpperBandLine(body);
+  line(body.shoulderR.x, body.spine.y+(body.shoulderR.y-body.shoulderL.y), 
+    body.shoulderL.x, body.spine.y+(body.shoulderL.y-body.shoulderR.y));
 }
 
 //腰ひも
@@ -187,8 +191,10 @@ void drawBandLine(KinectBody body) {
   stroke(0, 255, 255);
   strokeWeight(3);
 
-  line(body.shoulderR.x, (body.hipR.y+body.hipC.y)/2, 
-    body.shoulderL.x, (body.hipL.y+body.hipC.y)/2);
+  /*line(body.shoulderR.x, (body.hipR.y+body.hipC.y)/2, 
+   body.shoulderL.x, (body.hipL.y+body.hipC.y)/2);*/
+  line(body.shoulderR.x, body.hipC.y+(body.hipR.y-body.hipL.y), 
+    body.shoulderL.x, body.hipC.y+(body.hipL.y-body.hipR.y));
 }
 
 //裾のライン
