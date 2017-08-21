@@ -62,6 +62,10 @@ void draw() {
     text("Step"+(num+1)+": "+step.get(num), width/2+30, 50);
     image(stepImg.get(num), width-300, 0);
     text(stepStr.get(num), width/2+30, 100, 330, height);
+    fill(255);
+    rect(20, height-50, 220, 25);
+    fill(0);
+    text("鏡像です。左右に注意", 30, height-30);
   }
 
   switch(num) {    
