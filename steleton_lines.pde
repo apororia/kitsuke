@@ -1,4 +1,4 @@
-
+  
 
 import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
@@ -63,9 +63,9 @@ void draw() {
     image(stepImg.get(num), width-300, 0);
     text(stepStr.get(num), width/2+30, 100, 330, height);
     fill(255);
-    rect(20, height-50, 220, 25);
+    rect(20, height-50, 400, 25);
     fill(0);
-    text("鏡像です。左右に注意", 30, height-30);
+    text("鏡像です。左右がイラストと逆になります", 30, height-30);
   }
 
   switch(num) {    
@@ -80,6 +80,9 @@ void draw() {
     //腰紐
     for (int i=0; i<kBodies.size(); i++) {
       drawBandLine(kBodies.get(i));
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummy.sample();
+      dummy.drawArm();
     }
     break;
 
