@@ -9,4 +9,9 @@ class DummyJoint{
     x = _x;
     y = _y;
   }
+  
+  void move(float dx, float dy){
+    x += dx;
+    y += dy;
+  }
 }

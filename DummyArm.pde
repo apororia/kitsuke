@@ -2,7 +2,9 @@ class DummyArm {
   DummyJoint shoulderL, elbowL, wristL, handL;
   DummyJoint shoulderR, elbowR, wristR, handR;
   KinectBody body;
-  
+  DummyJoint[] left;
+  DummyJoint[] right;
+
   DummyArm(KinectBody _body) {
     body = _body;
     shoulderL = new DummyJoint(body.shoulderL.x, body.shoulderL.y);
@@ -13,6 +15,9 @@ class DummyArm {
     wristR = new DummyJoint(0, 0);
     handL = new DummyJoint(0, 0);
     handR = new DummyJoint(0, 0);
+    left = new DummyJoint[]{shoulderL, elbowL, wristL, handL};
+    right = new DummyJoint[]{shoulderR, elbowR, wristR, handR};
+    initPos();
   }
 
   void drawArm() {
@@ -34,7 +39,8 @@ class DummyArm {
     line(j1.x, j1.y, j2.x, j2.y);
   }
 
-  void sample() {
+  //腕初期位置 ひじ下短い？
+  void initPos() {
     elbowL.setPos(body.spine.x-(body.shoulderC.x-body.shoulderL.x), body.spine.y);
     wristL.setPos(body.hipL.x-(body.hipC.x-body.hipL.x), body.hipL.y);
     handL.setPos(wristL.x, wristL.y+(body.hipR.y-body.hipC.y));

@@ -1,10 +1,11 @@
-  
+
 
 import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
 Kinect kinect;
 ArrayList <SkeletonData> bodies;
+ArrayList<KinectBody> kBodies;
 
 int num = 0;
 int mode = 3;
@@ -22,6 +23,7 @@ void setup() {
   kinect = new Kinect(this);
   smooth();
   bodies = new ArrayList<SkeletonData>();
+  kBodies = new ArrayList<KinectBody>();
 
   myFont = createFont("Meiryo", 10);
   textFont(myFont);
@@ -46,12 +48,17 @@ void draw() {
   //Kinectの映像と骨格を表示
   image(kinect.GetImage(), 0, 0, 640, 480);
 
-  ArrayList<KinectBody> kBodies = new ArrayList<KinectBody>();
-  for (int i=0; i<bodies.size(); i++) {
-    KinectBody b = new KinectBody(bodies.get(i));
-    kBodies.add(b);
-    drawBody(b);
-    //drawPosition(bodies.get(i));
+  /*ArrayList<KinectBody> kBodies = new ArrayList<KinectBody>();
+   for (int i=0; i<bodies.size(); i++) {
+   KinectBody b = new KinectBody(bodies.get(i));
+   kBodies.add(b);
+   b.drawBody();
+   //drawPosition(bodies.get(i));
+   }*/
+  for (int i=0; i<kBodies.size(); i++) {
+    KinectBody body = kBodies.get(i);
+    body.position();
+    body.drawBody();
   }
 
   //ステップを表示
@@ -81,7 +88,6 @@ void draw() {
     for (int i=0; i<kBodies.size(); i++) {
       drawBandLine(kBodies.get(i));
       DummyArm dummy = new DummyArm(kBodies.get(i));
-      dummy.sample();
       dummy.drawArm();
     }
     break;
@@ -235,4 +241,13 @@ void imageDatejime(KinectBody body) {
     -dw, dh);
   scale(-1, 1);
   tint(255, 255);
+}
+
+//--------------------------------------
+
+//arm1の位置からarm2の位置へダミーアームを動かす
+void moveDummyArm(DummyArm arm1, DummyArm arm2, int frame) {
+  for (int i=0; i<arm1.left.length; i++) {
+    float dx = arm2.left[i].x-arm1.left[i].x/frame;
+  }
 }
