@@ -48,4 +48,5 @@ class DummyArm {
     wristR.setPos(body.hipR.x-(body.hipC.x-body.hipR.x), body.hipR.y);
     handR.setPos(wristR.x, wristR.y+(body.hipR.y-body.hipC.y));
   }
+  
 }

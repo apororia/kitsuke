@@ -14,6 +14,9 @@ ArrayList<PImage> stepImg;
 ArrayList<String> stepStr;
 PFont myFont;
 
+int cutFrame = 60;
+int startFrame = 0;
+
 //-----------------------------------------
 
 void setup() {
@@ -75,11 +78,14 @@ void draw() {
     text("鏡像です。左右がイラストと逆になります", 30, height-30);
   }
 
-  switch(num) {    
+  int time = (frameCount-startFrame)/cutFrame;
+  switch(num) {
   case 1:
     //裾
     for (int i=0; i<kBodies.size(); i++) {
-      //drawHemLine(kBodies.get(i));
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyHemLine(dummy, time);
+      println(time);
     }
     break;
 
@@ -138,8 +144,10 @@ void keyPressed() {
   if (mode>0) {
     if (keyCode == RIGHT) {
       num++;
+      startFrame = frameCount;
     } else if (keyCode == LEFT) {
       num--;
+      startFrame = frameCount;
     }
     if (key == 's') {
       save("kitsuke_"+frameCount+".png");
@@ -249,5 +257,29 @@ void imageDatejime(KinectBody body) {
 void moveDummyArm(DummyArm arm1, DummyArm arm2, int frame) {
   for (int i=0; i<arm1.left.length; i++) {
     float dx = arm2.left[i].x-arm1.left[i].x/frame;
+  }
+}
+
+void dummyHemLine(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%3) {
+  case 0:
+    arm.initPos();
+    arm.drawArm();
+    break;
+
+  case 1:
+    arm.initPos();
+    arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), body.hipL.y);
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipR.y-body.hipC.y));
+    arm.drawArm();
+    break;
+
+  case 2:
+    arm.initPos();
+    arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), arm.elbowL.y-(body.hipC.y-body.spine.y));
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y-(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
   }
 }

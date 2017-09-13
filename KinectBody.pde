@@ -45,7 +45,7 @@ class KinectBody {
     drawBone(hipC, hipL);
     drawBone(hipC, hipR);
     drawBone(hipL, hipR);
-    /*
+    
      //左腕
      drawBone(shoulderL, elbowL);
      drawBone(elbowL, wristL);
@@ -64,7 +64,7 @@ class KinectBody {
      //右脚
      drawBone(hipR, kneeR);
      drawBone(kneeR, ankleR);
-     drawBone(ankleR, footR);*/
+     drawBone(ankleR, footR);
   }
 
   void drawBone(KinectJoint j1, KinectJoint j2) {
