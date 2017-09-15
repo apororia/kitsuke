@@ -42,11 +42,10 @@ class DummyArm {
   //腕初期位置 ひじ下短い？
   void initPos() {
     elbowL.setPos(body.spine.x-(body.shoulderC.x-body.shoulderL.x), body.spine.y);
-    wristL.setPos(body.hipL.x-(body.hipC.x-body.hipL.x), body.hipL.y);
-    handL.setPos(wristL.x, wristL.y+(body.hipR.y-body.hipC.y));
+    wristL.setPos(body.hipL.x-(body.hipC.x-body.hipL.x), body.hipL.y+(body.hipL.y-body.spine.y));
+    handL.setPos(wristL.x, wristL.y+(body.hipL.y-body.hipC.y));
     elbowR.setPos(body.spine.x-(body.shoulderC.x-body.shoulderR.x), body.spine.y);
-    wristR.setPos(body.hipR.x-(body.hipC.x-body.hipR.x), body.hipR.y);
+    wristR.setPos(body.hipR.x-(body.hipC.x-body.hipR.x), body.hipR.y+(body.hipR.y-body.spine.y));
     handR.setPos(wristR.x, wristR.y+(body.hipR.y-body.hipC.y));
   }
-  
 }

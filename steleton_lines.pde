@@ -51,13 +51,6 @@ void draw() {
   //Kinectの映像と骨格を表示
   image(kinect.GetImage(), 0, 0, 640, 480);
 
-  /*ArrayList<KinectBody> kBodies = new ArrayList<KinectBody>();
-   for (int i=0; i<bodies.size(); i++) {
-   KinectBody b = new KinectBody(bodies.get(i));
-   kBodies.add(b);
-   b.drawBody();
-   //drawPosition(bodies.get(i));
-   }*/
   for (int i=0; i<kBodies.size(); i++) {
     KinectBody body = kBodies.get(i);
     body.position();
@@ -84,10 +77,31 @@ void draw() {
     //裾
     for (int i=0; i<kBodies.size(); i++) {
       DummyArm dummy = new DummyArm(kBodies.get(i));
-      dummyHemLine(dummy, time);
-      println(time);
+      dummyHem(dummy, time);
     }
     break;
+
+  case 2:
+    for (int i=0; i<kBodies.size(); i++) {
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyFrontL1(dummy, time);
+    }
+    break;
+
+  case 3:
+    for (int i=0; i<kBodies.size(); i++) {
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyFrontR(dummy, time);
+    }
+    break;
+
+  case 4:
+    for (int i=0; i<kBodies.size(); i++) {
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyFrontL2(dummy, time);
+    }
+    break;
+
 
   case 5:
     //腰紐
@@ -260,26 +274,119 @@ void moveDummyArm(DummyArm arm1, DummyArm arm2, int frame) {
   }
 }
 
-void dummyHemLine(DummyArm arm, int n) {
+void dummyHem(DummyArm arm, int n) {
   KinectBody body = arm.body;
-  switch(n%3) {
+  switch(n%5) {
   case 0:
     arm.initPos();
     arm.drawArm();
     break;
 
   case 1:
-    arm.initPos();
+    //裾つかむ
     arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), body.hipL.y);
-    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipR.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y));
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), body.hipR.y);
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.hipR.y-body.hipC.y));
     arm.drawArm();
     break;
 
   case 2:
-    arm.initPos();
+    //持ち上げる
     arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), arm.elbowL.y-(body.hipC.y-body.spine.y));
     arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y-(body.hipR.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y-(body.hipC.y-body.spine.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y-(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
+    break;
+
+  case 3:
+    //おろす
+    arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), arm.elbowL.y+(body.hipL.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y+(body.hipR.y-body.hipC.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
+
+  case 4:
+    break;
+  }
+}
+
+void dummyFrontL1(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%3) {
+  case 0:
+    dummyHem(arm, 3);  //前ステップの最後の位置から
+    break;
+
+  case 1:
+    //上前合わせる
+    arm.wristL.setPos(body.hipR.x-(body.hipC.x-body.hipL.x)/2, arm.elbowL.y+(body.hipL.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y+(body.hipR.y-body.hipC.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
+
+  case 2:
+    break;
+  }
+}
+
+void dummyFrontR(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%4) {
+  case 0:
+    dummyFrontL1(arm, 1);  //前ステップの最後の位置から
+    break;
+
+  case 1:
+    //一度開く
+    dummyHem(arm, 3);
+    break;
+
+  case 2:
+    //下前合わせる
+    arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), arm.elbowL.y+(body.hipL.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.hipL.x-(body.hipC.x-body.hipL.x)/2, arm.elbowR.y+(body.hipR.y-body.hipC.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipL.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
+
+  case 3:
+    break;
+  }
+}
+
+void dummyFrontL2(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%4) {
+  case 0:
+    dummyFrontR(arm, 2);  //前ステップの最後の位置から
+    break;
+
+  case 1:
+    //右手そのまま上前とじる
+    arm.wristL.setPos(body.hipR.x-(body.hipC.x-body.hipL.x)/2, arm.elbowL.y+(body.hipL.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.hipL.x-(body.hipC.x-body.hipL.x)/2, arm.elbowR.y+(body.hipR.y-body.hipC.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipL.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
+
+  case 2:
+    //右手抜く
+    arm.wristL.setPos(body.hipR.x-(body.hipC.x-body.hipL.x)/2, arm.elbowL.y+(body.hipL.y-body.hipC.y));
+    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y-(body.hipC.y-body.spine.y));
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y-(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
+    break;
+
+  case 3:
     break;
   }
 }
