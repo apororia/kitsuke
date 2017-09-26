@@ -48,9 +48,9 @@ void draw() {
 
   strokeWeight(1);
   noFill();
+  
   //Kinectの映像と骨格を表示
   image(kinect.GetImage(), 0, 0, 640, 480);
-
   for (int i=0; i<kBodies.size(); i++) {
     KinectBody body = kBodies.get(i);
     body.position();
@@ -177,6 +177,8 @@ void keyPressed() {
 
 //--------------------------------------------
 
+//ガイド線
+
 //衿のライン右
 void drawCollarR(KinectBody body) {
   stroke(0, 255, 255);
@@ -267,12 +269,7 @@ void imageDatejime(KinectBody body) {
 
 //--------------------------------------
 
-//arm1の位置からarm2の位置へダミーアームを動かす
-void moveDummyArm(DummyArm arm1, DummyArm arm2, int frame) {
-  for (int i=0; i<arm1.left.length; i++) {
-    float dx = arm2.left[i].x-arm1.left[i].x/frame;
-  }
-}
+//ダミーアーム用関数
 
 //裾合わせ
 void dummyHem(DummyArm arm, int n) {
@@ -443,7 +440,7 @@ void dummyBand(DummyArm arm, int n) {
     break;
 
   case 4:
-    //前で結ぶ
+    //前で結ぶ（とりあえず後ろと同じ）
     dummyBand(arm, 2);
     break;
 
