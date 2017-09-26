@@ -540,6 +540,9 @@ void dummyCollarL(DummyArm arm, int n) {
     arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipL.y-body.hipC.y));
     arm.wristL.setPos(body.shoulderC.x-(body.shoulderC.x-body.shoulderL.x)/4, body.shoulderL.y);
     arm.handL.setPos(body.shoulderC.x, (body.shoulderC.y+body.shoulderL.y)/2);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos((body.shoulderR.x+body.shoulderC.x)/2, (body.shoulderR.y+body.spine.y)/2);
     arm.drawArm();
     break;
 
@@ -547,6 +550,9 @@ void dummyCollarL(DummyArm arm, int n) {
     arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipL.y-body.hipC.y));
     arm.wristL.setPos(body.shoulderC.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
     arm.handL.setPos((body.shoulderR.x+body.shoulderC.x)/2, (body.shoulderR.y+body.spine.y)/2);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.hipR.x+(body.hipR.x-body.hipC.x), body.hipC.y);
+    arm.handR.setPos(body.hipR.x, arm.wristR.y);
     arm.drawArm();
     break;
   }
