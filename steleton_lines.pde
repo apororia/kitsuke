@@ -14,7 +14,7 @@ ArrayList<PImage> stepImg;
 ArrayList<String> stepStr;
 PFont myFont;
 
-int cutFrame = 60;
+int cutFrame = 30;
 int startFrame = 0;
 
 //-----------------------------------------
@@ -48,7 +48,7 @@ void draw() {
 
   strokeWeight(1);
   noFill();
-  
+
   //Kinectの映像と骨格を表示
   image(kinect.GetImage(), 0, 0, 640, 480);
   for (int i=0; i<kBodies.size(); i++) {
@@ -106,7 +106,7 @@ void draw() {
   case 5:
     //腰紐
     for (int i=0; i<kBodies.size(); i++) {
-      drawBandLine(kBodies.get(i));
+      //drawBandLine(kBodies.get(i));
       DummyArm dummy = new DummyArm(kBodies.get(i));
       dummyBand(dummy, time);
     }
@@ -408,12 +408,13 @@ void dummyBand(DummyArm arm, int n) {
 
   case 1:
     //前に当てる
+    drawBandLine(body);
     arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x), body.spine.y-(body.hipL.y-body.spine.y)/2);
-    arm.wristL.setPos(body.hipL.x-(body.hipC.x-body.hipL.x), body.hipC.y);
-    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x), arm.wristL.y);
+    arm.wristL.setPos(body.hipL.x-(body.hipC.x-body.hipL.x), body.hipC.y-(body.hipL.y-body.hipC.y)/3);
+    arm.handL.setPos(arm.wristL.x, body.hipC.y+(body.hipL.y-body.hipC.y)/3);
     arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
-    arm.wristR.setPos(body.hipR.x+(body.hipR.x-body.hipC.x), body.hipC.y);
-    arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x), arm.wristR.y);
+    arm.wristR.setPos(body.hipR.x+(body.hipR.x-body.hipC.x), body.hipC.y-(body.hipR.y-body.hipC.y)/3);
+    arm.handR.setPos(arm.wristR.x, body.hipC.y+(body.hipR.y-body.hipC.y)/3);
     arm.drawArm();
     break;
 
@@ -426,10 +427,12 @@ void dummyBand(DummyArm arm, int n) {
     arm.wristR.setPos(body.hipC.x+(body.hipR.x-body.hipC.x)/2, body.hipC.y);
     arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x)/2, arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
+    drawBandLine(body);
     break;
 
   case 3:
     //締める
+    drawBandLine(body);
     arm.elbowL.setPos(body.shoulderL.x, body.spine.y);
     arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), body.hipC.y);
     arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
@@ -441,7 +444,14 @@ void dummyBand(DummyArm arm, int n) {
 
   case 4:
     //前で結ぶ（とりあえず後ろと同じ）
-    dummyBand(arm, 2);
+    drawBandLine(body);
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipL.y-body.spine.y)/2);
+    arm.wristL.setPos(body.hipC.x-(body.hipC.x-body.hipL.x)/2, body.hipC.y);
+    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x)/2, arm.wristL.y+(body.hipL.y-body.hipC.y)/2);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.hipC.x+(body.hipR.x-body.hipC.x)/2, body.hipC.y);
+    arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x)/2, arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
+    arm.drawArm();
     break;
 
   case 5:
