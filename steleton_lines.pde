@@ -4,7 +4,7 @@ import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
 Kinect kinect;
-ArrayList <SkeletonData> bodies;
+ArrayList<SkeletonData> bodies;
 ArrayList<KinectBody> kBodies;
 
 int num = 0;
@@ -58,7 +58,7 @@ void draw() {
   }
 
   //ステップを表示
-  if (mode>0) {
+  if (mode > 0) {
     fill(0);
     noStroke();
     textSize(20);
@@ -82,6 +82,7 @@ void draw() {
     break;
 
   case 2:
+    //前合わせ（左）
     for (int i=0; i<kBodies.size(); i++) {
       DummyArm dummy = new DummyArm(kBodies.get(i));
       dummyFrontL1(dummy, time);
@@ -89,6 +90,7 @@ void draw() {
     break;
 
   case 3:
+    //前合わせ（右）
     for (int i=0; i<kBodies.size(); i++) {
       DummyArm dummy = new DummyArm(kBodies.get(i));
       dummyFrontR(dummy, time);
@@ -96,6 +98,7 @@ void draw() {
     break;
 
   case 4:
+    //前合わせ（再度左）
     for (int i=0; i<kBodies.size(); i++) {
       DummyArm dummy = new DummyArm(kBodies.get(i));
       dummyFrontL2(dummy, time);
@@ -149,6 +152,7 @@ void draw() {
     break;
 
   case 10:
+    //しわ取り
     for (int i=0; i<kBodies.size(); i++) {
       DummyArm dummy = new DummyArm(kBodies.get(i));
       dummyWrinkle(dummy, time);
@@ -172,7 +176,7 @@ void draw() {
 
 //左右キーでステップ移動
 void keyPressed() {
-  if (mode>0) {
+  if (mode > 0) {
     if (keyCode == RIGHT) {
       num++;
       startFrame = frameCount;
@@ -181,14 +185,15 @@ void keyPressed() {
       startFrame = frameCount;
     }
     if (key == 's') {
+      //sキーでスクショ
       save("kitsuke_"+frameCount+".png");
     }
   }
-  if (num<0) {
-    num=0;
+  if (num < 0) {
+    num = 0;
   }
-  if (num>=step.size()) {
-    num=step.size()-1;
+  if (num >= step.size()) {
+    num = step.size()-1;
   }
 }
 
