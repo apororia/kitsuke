@@ -14,7 +14,7 @@ ArrayList<PImage> stepImg;
 ArrayList<String> stepStr;
 PFont myFont;
 
-int cutFrame = 30;
+int cutFrame = 40;
 int startFrame = 0;
 
 //-----------------------------------------
@@ -143,7 +143,15 @@ void draw() {
   case 9:
     //胸紐
     for (int i=0; i<kBodies.size(); i++) {
-      drawUpperBandLine(kBodies.get(i));
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyUpperBand(dummy, time);
+    }
+    break;
+
+  case 10:
+    for (int i=0; i<kBodies.size(); i++) {
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyWrinkle(dummy, time);
     }
     break;
 
@@ -152,8 +160,9 @@ void draw() {
     PImage datejime = loadImage("datejime.png");
     subImg(datejime);
     for (int i=0; i<kBodies.size(); i++) {
-      //imageDatejime(kBodies.get(i));
-      drawDatejimeLine(kBodies.get(i));
+      //drawDatejimeLine(kBodies.get(i));
+      DummyArm dummy = new DummyArm(kBodies.get(i));
+      dummyDatejime(dummy, time);
     }
     break;
   }
@@ -268,21 +277,6 @@ void subImg(PImage img) {
   image(img, width/2, height-img.height);
 }
 
-//伊達締めイラスト反転半透明
-void imageDatejime(KinectBody body) {
-  PImage d = stepImg.get(num).get(0, 180, stepImg.get(num).width, 80);
-  float dh = (body.spine.y-body.shoulderC.y)*3/5;
-  float dw = d.width*(dh/d.height);
-  scale(-1, 1);
-  tint(255, 60);
-  image(d, 
-    -body.shoulderC.x+dw/2, 
-    body.spine.y*3/4+body.shoulderC.y/4-dh/2, 
-    -dw, dh);
-  scale(-1, 1);
-  tint(255, 255);
-}
-
 //--------------------------------------
 
 //ダミーアーム用関数
@@ -322,9 +316,6 @@ void dummyHem(DummyArm arm, int n) {
     arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
     break;
-
-  case 4:
-    break;
   }
 }
 
@@ -343,9 +334,6 @@ void dummyFrontL1(DummyArm arm, int n) {
     arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y+(body.hipR.y-body.hipC.y));
     arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
-    break;
-
-  case 2:
     break;
   }
 }
@@ -370,9 +358,6 @@ void dummyFrontR(DummyArm arm, int n) {
     arm.wristR.setPos(body.hipL.x-(body.hipC.x-body.hipL.x)/2, arm.elbowR.y+(body.hipR.y-body.hipC.y));
     arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipL.x), arm.wristR.y+(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
-    break;
-
-  case 3:
     break;
   }
 }
@@ -401,9 +386,6 @@ void dummyFrontL2(DummyArm arm, int n) {
     arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), arm.elbowR.y-(body.hipC.y-body.spine.y));
     arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y-(body.hipR.y-body.hipC.y)/2);
     arm.drawArm();
-    break;
-
-  case 3:
     break;
   }
 }
@@ -469,9 +451,6 @@ void dummyBand(DummyArm arm, int n) {
     arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x), arm.wristR.y);
     arm.drawArm();
     break;
-
-  case 5:
-    break;
   }
 }
 
@@ -499,9 +478,6 @@ void dummyOhashori(DummyArm arm, int n) {
     arm.wristR.setPos(body.hipR.x+(body.hipR.x-body.hipC.x), body.hipC.y);
     arm.handR.setPos(body.hipR.x, arm.wristR.y);
     arm.drawArm();
-    break;
-
-  case 2:
     break;
   }
 }
@@ -553,6 +529,158 @@ void dummyCollarL(DummyArm arm, int n) {
     arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
     arm.wristR.setPos(body.hipR.x+(body.hipR.x-body.hipC.x), body.hipC.y);
     arm.handR.setPos(body.hipR.x, arm.wristR.y);
+    arm.drawArm();
+    break;
+  }
+}
+
+//胸紐
+void dummyUpperBand(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%6) {
+  case 0:
+    //紐を取ってもう片方の手に渡す
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipL.y-body.hipC.y));
+    arm.wristL.setPos(body.shoulderC.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handL.setPos((body.shoulderR.x+body.shoulderC.x)/2, arm.wristL.y);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(body.shoulderR.x-(body.shoulderR.x-body.shoulderC.x)/3, (body.shoulderR.y+body.spine.y)/2);
+    arm.drawArm();
+    break;
+
+  case 1:
+    //前に当てる
+    drawUpperBandLine(body);
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x), body.spine.y-(body.hipL.y-body.spine.y)/2);
+    arm.wristL.setPos(body.shoulderL.x, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.handL.setPos(body.shoulderL.x+(body.shoulderC.x-body.shoulderL.x)/3, (body.shoulderL.y+body.spine.y)/2);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(body.shoulderR.x-(body.shoulderR.x-body.shoulderC.x)/3, (body.shoulderR.y+body.spine.y)/2);
+    arm.drawArm();
+    break;
+
+  case 2:
+    //後ろで交差
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipL.y-body.spine.y)/3);
+    arm.wristL.setPos(body.hipC.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.handL.setPos(arm.wristL.x+(body.hipR.x-body.hipL.x)/3, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.wristR.setPos(body.hipC.x+(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipL.x)/3, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.drawArm();
+    drawUpperBandLine(body);
+    break;
+
+  case 3:
+    //締める
+    drawUpperBandLine(body);
+    arm.elbowL.setPos(body.shoulderL.x, body.spine.y);
+    arm.wristL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x), body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.handL.setPos(arm.wristL.x-(body.hipC.x-body.hipL.x), arm.wristL.y+(body.shoulderL.y-body.shoulderC.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x, body.spine.y);
+    arm.wristR.setPos(body.shoulderR.x-(body.hipC.x-body.hipR.x), body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipR.x), arm.wristR.y+(body.shoulderR.y-body.shoulderC.y)/3);
+    arm.drawArm();
+    break;
+
+  case 4:
+    //前で結ぶ（少し右寄り）
+    drawUpperBandLine(body);
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipL.y-body.spine.y)/2);
+    arm.wristL.setPos(body.hipR.x-(body.hipR.x-body.hipC.x), arm.elbowL.y-(body.shoulderL.y-body.shoulderC.y)/2);
+    arm.handL.setPos(arm.wristL.x+(body.hipR.x-body.hipC.x), arm.wristL.y+(body.shoulderL.y-body.shoulderC.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.hipR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x), arm.wristR.y);
+    arm.drawArm();
+    break;
+  }
+}
+
+void dummyWrinkle(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%3) {
+  case 0:
+    //真ん中へんから
+    arm.elbowL.setPos(body.shoulderL.x-(body.shoulderC.x-body.shoulderL.x)/3, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.wristL.setPos(body.hipC.x-(body.shoulderC.x-body.shoulderL.x)/2, body.spine.y-(body.hipL.y-body.spine.y)/3);
+    arm.handL.setPos(arm.wristL.x, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.shoulderR.x-body.shoulderC.x)/3, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.wristR.setPos(body.hipC.x+(body.shoulderR.x-body.shoulderC.x)/3, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.handR.setPos(arm.wristR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.drawArm();
+    drawUpperBandLine(body);
+    break;
+
+  case 1:
+    //外側へ
+    arm.elbowL.setPos(body.shoulderL.x-(body.shoulderR.x-body.shoulderL.x)/3, body.spine.y-(body.spine.y-body.shoulderL.y)/2);
+    arm.wristL.setPos(body.shoulderL.x, body.spine.y-(body.hipL.y-body.spine.y)/3);
+    arm.handL.setPos(body.shoulderL.x+(body.hipC.x-body.hipL.x)/3, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.shoulderR.x-body.shoulderL.x)/3, body.spine.y-(body.spine.y-body.shoulderR.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.handR.setPos(body.shoulderR.x-(body.hipR.x-body.hipC.x)/3, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.drawArm();
+    drawUpperBandLine(body);
+    break;
+  }
+}
+
+void dummyDatejime(DummyArm arm, int n) {
+  KinectBody body = arm.body;
+  switch(n%6) {
+  case 0:
+    //伊達締めを取ってもう片方の手に渡す
+    arm.elbowL.setPos(body.shoulderL.x, body.spine.y-(body.hipL.y-body.hipC.y));
+    arm.wristL.setPos(body.shoulderC.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handL.setPos((body.shoulderR.x+body.shoulderC.x)/2, arm.wristL.y+(body.shoulderL.y-body.shoulderC.y)/4);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(body.shoulderR.x-(body.shoulderR.x-body.shoulderC.x)/3, arm.wristR.y+(body.shoulderR.y-body.shoulderC.y)/3);
+    arm.drawArm();
+    break;
+
+  case 1:
+    //前に当てる
+    drawDatejimeLine(body);
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x), body.spine.y-(body.hipL.y-body.spine.y)/2);
+    arm.wristL.setPos(body.shoulderL.x, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.handL.setPos(body.shoulderL.x+(body.shoulderC.x-body.shoulderL.x)/3, arm.wristL.y+(body.shoulderL.y-body.shoulderC.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipC.x-body.hipL.x), body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.shoulderR.x, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.handR.setPos(body.shoulderR.x-(body.shoulderR.x-body.shoulderC.x)/3, arm.wristR.y+(body.shoulderR.y-body.shoulderC.y)/3);
+    arm.drawArm();
+    break;
+
+  case 2:
+    //後ろで交差
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipL.y-body.spine.y)/3);
+    arm.wristL.setPos(body.hipC.x-(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.handL.setPos(arm.wristL.x+(body.hipC.x-body.hipL.x)/2, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x+(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.wristR.setPos(body.hipC.x+(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/3);
+    arm.handR.setPos(arm.wristR.x-(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.spine.y-body.shoulderR.y)/3);
+    arm.drawArm();
+    drawDatejimeLine(body);
+    break;
+
+  case 3:
+    //締める
+    dummyUpperBand(arm, 3);
+    drawDatejimeLine(body);
+    break;
+
+  case 4:
+    //前で結ぶ（少し左寄り）
+    drawDatejimeLine(body);
+    arm.elbowL.setPos(body.shoulderL.x-(body.hipR.x-body.hipC.x), body.spine.y-(body.hipL.y-body.spine.y)/2);
+    arm.wristL.setPos(body.shoulderL.x, body.spine.y-(body.spine.y-body.shoulderL.y)/3);
+    arm.handL.setPos(body.shoulderL.x+(body.shoulderC.x-body.shoulderL.x)/3, arm.wristL.y+(body.shoulderL.y-body.shoulderC.y)/3);
+    arm.elbowR.setPos(body.shoulderR.x-(body.hipR.x-body.hipC.x)/2, body.spine.y-(body.hipR.y-body.spine.y)/2);
+    arm.wristR.setPos(body.hipL.x+(body.hipC.x-body.hipL.x), arm.elbowR.y-(body.shoulderR.y-body.shoulderC.y)/3);
+    arm.handR.setPos(arm.wristR.x-(body.hipC.x-body.hipL.x), arm.wristR.y+(body.shoulderR.y-body.shoulderC.y)/3);
     arm.drawArm();
     break;
   }
