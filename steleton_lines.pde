@@ -8,7 +8,6 @@ ArrayList<SkeletonData> bodies;
 ArrayList<KinectBody> kBodies;
 
 int num = 0;
-int mode = 3;
 ArrayList<String> step;
 ArrayList<PImage> stepImg;
 ArrayList<String> stepStr;
@@ -58,18 +57,16 @@ void draw() {
   }
 
   //ステップを表示
-  if (mode > 0) {
-    fill(0);
-    noStroke();
-    textSize(20);
-    text("Step"+(num+1)+": "+step.get(num), width/2+30, 50);
-    image(stepImg.get(num), width-300, 0);
-    text(stepStr.get(num), width/2+30, 100, 330, height);
-    fill(255);
-    rect(20, height-50, 400, 25);
-    fill(0);
-    text("鏡像です。左右がイラストと逆になります", 30, height-30);
-  }
+  fill(0);
+  noStroke();
+  textSize(20);
+  text("Step"+(num+1)+": "+step.get(num), width/2+30, 50);
+  image(stepImg.get(num), width-300, 0);
+  text(stepStr.get(num), width/2+30, 100, 330, height);
+  fill(255);
+  rect(20, height-50, 400, 25);
+  fill(0);
+  text("鏡像です。左右がイラストと逆になります", 30, height-30);
 
   int time = (frameCount-startFrame)/cutFrame;
   switch(num) {
@@ -176,18 +173,16 @@ void draw() {
 
 //左右キーでステップ移動
 void keyPressed() {
-  if (mode > 0) {
-    if (keyCode == RIGHT) {
-      num++;
-      startFrame = frameCount;
-    } else if (keyCode == LEFT) {
-      num--;
-      startFrame = frameCount;
-    }
-    if (key == 's') {
-      //sキーでスクショ
-      save("kitsuke_"+frameCount+".png");
-    }
+  if (keyCode == RIGHT) {
+    num++;
+    startFrame = frameCount;
+  } else if (keyCode == LEFT) {
+    num--;
+    startFrame = frameCount;
+  }
+  if (key == 's') {
+    //sキーでスクショ
+    save("kitsuke_"+frameCount+".png");
   }
   if (num < 0) {
     num = 0;

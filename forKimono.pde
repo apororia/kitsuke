@@ -1,10 +1,3 @@
-void drawMenu() {
-  for (int i=0; i<4; i++) {
-    rect(i*300+50, 200, 200, 200);
-  }
-}
-
-//----------------------------------------------
 
 void juban() {
   initList();
@@ -42,10 +35,6 @@ void kimono() {
   //説明文をリストに入れる
   String [] str = loadStrings("kimono_howto.txt");
   prepareStr(str);
-}
-
-void obi() {
-  initList();
 }
 
 //----------------------------------------------
